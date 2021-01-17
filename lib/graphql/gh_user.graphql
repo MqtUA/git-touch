@@ -1,7 +1,27 @@
-query GhUser($login: String!, $isViewer: Boolean!) {
-  repositoryOwner(login: $login) @skip(if: $isViewer) {
+fragment RepoPart on Repository {
+  owner {
+    login
+    avatarUrl
+  }
+  name
+  description
+  isPrivate
+  isFork
+  stargazers {
+    totalCount
+  }
+  forks {
+    totalCount
+  }
+  primaryLanguage {
+    color
+    name
+  }
+}
+
+query GhUser($login: String!) {
+  repositoryOwner(login: $login) {
     __typename
-    id
     login
     avatarUrl
     url
@@ -13,6 +33,8 @@ query GhUser($login: String!, $isViewer: Boolean!) {
       email
       createdAt
       websiteUrl
+      viewerCanFollow
+      viewerIsFollowing
       starredRepositories {
         totalCount
       }
@@ -38,84 +60,33 @@ query GhUser($login: String!, $isViewer: Boolean!) {
       ) {
         totalCount
         nodes {
-          owner {
-            login
-            avatarUrl
-          }
-          name
-          description
-          isPrivate
-          isFork
-          stargazers {
-            totalCount
-          }
-          forks {
-            totalCount
-          }
-          primaryLanguage {
-            color
-            name
-          }
+          ...RepoPart
         }
       }
       pinnedItems(first: 6) {
-        totalCount # TODO: Add this for correct generated code
         nodes {
           __typename
           ... on Repository {
-            owner {
-              login
-              avatarUrl
-            }
-            name
-            description
-            isPrivate
-            isFork
-            stargazers {
-              totalCount
-            }
-            forks {
-              totalCount
-            }
-            primaryLanguage {
-              color
-              name
-            }
+            ...RepoPart
           }
         }
       }
-      viewerCanFollow
-      viewerIsFollowing
     }
     ... on Organization {
       name
       description
       location
-      email
+      orgEmail: email
       websiteUrl
       createdAt
+      membersWithRole {
+        totalCount
+      }
       pinnedItems(first: 6) {
         nodes {
           __typename
           ... on Repository {
-            owner {
-              login
-              avatarUrl
-            }
-            name
-            description
-            isPrivate
-            isFork
-            stargazers {
-              totalCount
-            }
-            forks {
-              totalCount
-            }
-            primaryLanguage {
-              color
-              name
-            }
+            ...RepoPart
           }
         }
       }
@@ -124,116 +95,10 @@ query GhUser($login: String!, $isViewer: Boolean!) {
         nodes {
           __typename
           ... on Repository {
-            owner {
-              login
-              avatarUrl
-            }
-            name
-            description
-            isPrivate
-            isFork
-            stargazers {
-              totalCount
-            }
-            forks {
-              totalCount
-            }
-            primaryLanguage {
-              color
-              name
-            }
-          }
-        }
-      }
-      membersWithRole {
-        totalCount
-      }
-    }
-  }
-  viewer @include(if: $isViewer) {
-    id
-    login
-    avatarUrl
-    url
-    name
-    bio
-    company
-    location
-    email
-    createdAt
-    websiteUrl
-    starredRepositories {
-      totalCount
-    }
-    followers {
-      totalCount
-    }
-    following {
-      totalCount
-    }
-    contributionsCollection {
-      contributionCalendar {
-        weeks {
-          contributionDays {
-            color
+            ...RepoPart
           }
         }
       }
     }
-    repositories(
-      first: 6
-      ownerAffiliations: OWNER
-      orderBy: { field: STARGAZERS, direction: DESC }
-    ) {
-      totalCount
-      nodes {
-        owner {
-          login
-          avatarUrl
-        }
-        name
-        description
-        isPrivate
-        isFork
-        stargazers {
-          totalCount
-        }
-        forks {
-          totalCount
-        }
-        primaryLanguage {
-          color
-          name
-        }
-      }
-    }
-    pinnedItems(first: 6) {
-      totalCount # TODO: Add this for correct generated code
-      nodes {
-        __typename
-        ... on Repository {
-          owner {
-            login
-            avatarUrl
-          }
-          name
-          description
-          isPrivate
-          isFork
-          stargazers {
-            totalCount
-          }
-          forks {
-            totalCount
-          }
-          primaryLanguage {
-            color
-            name
-          }
-        }
-      }
-    }
-    viewerCanFollow
-    viewerIsFollowing
   }
 }

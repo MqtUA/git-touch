@@ -7,6 +7,7 @@ import 'package:git_touch/screens/bb_explore.dart';
 import 'package:git_touch/screens/bb_teams.dart';
 import 'package:git_touch/screens/bb_user.dart';
 import 'package:git_touch/screens/ge_user.dart';
+import 'package:git_touch/screens/gh_viewer.dart';
 import 'package:git_touch/screens/gl_search.dart';
 import 'package:git_touch/screens/gt_orgs.dart';
 import 'package:git_touch/screens/gt_user.dart';
@@ -57,7 +58,7 @@ class _HomeState extends State<Home> {
           case 3:
             return GhSearchScreen();
           case 4:
-            return GhUserScreen(null);
+            return GhViewerScreen();
         }
         break;
       case PlatformType.gitlab:

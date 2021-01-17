@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:git_touch/graphql/gh.dart';
 import 'package:git_touch/models/auth.dart';
 import 'package:git_touch/models/theme.dart';
 import 'package:git_touch/utils/utils.dart';
@@ -502,19 +501,19 @@ fragment ReactableParts on Reactable {
                 ActionItem(
                   text: payload['closed'] ? 'Reopen issue' : 'Close issue',
                   onTap: (_) async {
-                    final res = await context
-                        .read<AuthModel>()
-                        .gqlClient
-                        .execute(GhOpenIssueQuery(
-                          variables: GhOpenIssueArguments(
-                            id: payload['id'],
-                            open: payload['closed'],
-                          ),
-                        ));
-                    setState(() {
-                      payload['closed'] = res.data.reopenIssue?.issue?.closed ??
-                          res.data.closeIssue.issue.closed;
-                    });
+                    // final res = await context
+                    //     .read<AuthModel>()
+                    //     .gqlClient
+                    //     .execute(GhOpenIssueQuery(
+                    //       variables: GhOpenIssueArguments(
+                    //         id: payload['id'],
+                    //         open: payload['closed'],
+                    //       ),
+                    //     ));
+                    // setState(() {
+                    //   payload['closed'] = res.data.reopenIssue?.issue?.closed ??
+                    //       res.data.closeIssue.issue.closed;
+                    // });
                   },
                 ),
               ...ActionItem.getUrlActions(payload['url'] as String),

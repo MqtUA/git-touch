@@ -1,0 +1,34 @@
+query GhViewer {
+  viewer {
+    login
+    avatarUrl
+    name
+    bio
+    company
+    location
+    email
+    createdAt
+    websiteUrl
+    starredRepositories {
+      totalCount
+    }
+    followers {
+      totalCount
+    }
+    following {
+      totalCount
+    }
+    repositories {
+      totalCount
+    }
+    contributionsCollection {
+      contributionCalendar {
+        weeks {
+          contributionDays {
+            color
+          }
+        }
+      }
+    }
+  }
+}
